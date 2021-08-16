@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CollegeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Doctor">
+    <Key>
+      <PropertyRef Name="Doc_id" />
+    </Key>
+    <Property Name="Doc_id" Type="Int32" Nullable="false" />
+    <Property Name="Doc_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Doc_Num" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Doctor1" Relationship="Self.FK_Doctor_Doctor" FromRole="Doctor" ToRole="Doctor1" />
+    <NavigationProperty Name="Doctor2" Relationship="Self.FK_Doctor_Doctor" FromRole="Doctor1" ToRole="Doctor" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Student_Doctor" FromRole="Doctor" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="stu_id" />
+    </Key>
+    <Property Name="stu_id" Type="Int32" Nullable="false" />
+    <Property Name="stu_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="stu_Num" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Doctor" Relationship="Self.FK_Student_Doctor" FromRole="Student" ToRole="Doctor" />
+  </EntityType>
+  <Association Name="FK_Doctor_Doctor">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+    <End Role="Doctor1" Type="Self.Doctor" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="Doc_id" />
+      </Principal>
+      <Dependent Role="Doctor1">
+        <PropertyRef Name="Doc_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Doctor">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="Doc_id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="stu_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CollegeEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Doctors" EntityType="Self.Doctor" />
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <AssociationSet Name="FK_Doctor_Doctor" Association="Self.FK_Doctor_Doctor">
+      <End Role="Doctor" EntitySet="Doctors" />
+      <End Role="Doctor1" EntitySet="Doctors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Doctor" Association="Self.FK_Student_Doctor">
+      <End Role="Doctor" EntitySet="Doctors" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

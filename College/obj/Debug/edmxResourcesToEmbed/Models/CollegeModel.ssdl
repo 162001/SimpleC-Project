@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CollegeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Doctor">
+    <Key>
+      <PropertyRef Name="Doc_id" />
+    </Key>
+    <Property Name="Doc_id" Type="int" Nullable="false" />
+    <Property Name="Doc_Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Doc_Num" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="stu_id" />
+    </Key>
+    <Property Name="stu_id" Type="int" Nullable="false" />
+    <Property Name="stu_Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="stu_Num" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Doctor_Doctor">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+    <End Role="Doctor1" Type="Self.Doctor" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="Doc_id" />
+      </Principal>
+      <Dependent Role="Doctor1">
+        <PropertyRef Name="Doc_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Doctor">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="Doc_id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="stu_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CollegeModelStoreContainer">
+    <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Doctor_Doctor" Association="Self.FK_Doctor_Doctor">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="Doctor1" EntitySet="Doctor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Doctor" Association="Self.FK_Student_Doctor">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
